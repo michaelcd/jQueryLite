@@ -1,67 +1,77 @@
 (function() {
 
-  if (typeof window.jQueryLite === "undefined") {
-    window.jQueryLite = {};
+  // var fn = function () {
+  //   for(var i = 0; i < jQueryLite.$l.fnArray.length; i++) {
+  //     jQueryLite.$l.fnArray[i]();
+  //   }
+  // };
+
+  if (typeof window.$l === "undefined") {
+    window.$l = {};
   }
 
-  jQueryLite.$l = function (argument) {
+  $l = function (argument) {
+    var fnArray = [];
     if (argument instanceof HTMLElement) {
-      this.nodeList = new jQueryLite.DOMNodeCollection([argument]);
+      return new DOMNodeCollection([argument]);
     } else if (typeof argument === "string") {
-      this.nodeList = document.querySelectorAll(argument);
-      this.nodeList = [].slice.call(this.nodeList);
-      this.nodeList = new jQueryLite.DOMNodeCollection(this.nodeList);
+      var nodeList = document.querySelectorAll(argument);
+      nodeList = [].slice.call(nodeList);
+      return new DOMNodeCollection(nodeList);
+    } else if (typeof argument === "function") {
+      fnArray.push(argument);
+      document.addEventListener('DOMContentLoaded', argument, false);
     }
   };
 
-  jQueryLite.DOMNodeCollection = function (HTMLElements) {
+  var DOMNodeCollection = function (HTMLElements) {
     this.HTMLElements = HTMLElements;
   };
 
-  jQueryLite.$l.prototype.html = function (string) {
+  DOMNodeCollection.prototype.html = function (string) {
     if (typeof string === "string") {
-      this.nodeList.HTMLElements.forEach(function(element) {
+      this.HTMLElements.forEach(function(element) {
         element.innerHTML = string;
       });
     } else {
-      return this.nodeList.HTMLElements[0].innerHTML;
+      return this.HTMLElements[0].innerHTML;
     }
   };
 
-  jQueryLite.$l.prototype.empty = function () {
+  DOMNodeCollection.prototype.empty = function () {
     this.html("");
   };
 
-  jQueryLite.$l.prototype.append = function (argument) {
+  DOMNodeCollection.prototype.append = function (argument) {
     if (typeof argument === "string") {
-      this.nodeList.HTMLElements.forEach(function(element) {
+      this.HTMLElements.forEach(function(element) {
         element.innerHTML += argument;
       });
     } else if (argument instanceof HTMLElement) {
-      this.nodeList.HTMLElements.forEach(function(element) {
+      this.HTMLElements.forEach(function(element) {
         var newNode = argument.cloneNode();
         newNode.innerHTML = argument.innerHTML;
         element.appendChild(newNode);
       });
     } else if (argument instanceof jQueryLite.$l) {
-      for (var i = 0; i < argument.nodeList.HTMLElements.length; i++) {
-        this.append(argument.nodeList.HTMLElements[i]);
+      for (var i = 0; i < argument.HTMLElements.length; i++) {
+        this.append(argument.HTMLElements[i]);
       }
     }
   };
 
-  jQueryLite.$l.prototype.attr = function (attributeName, value) {
+  DOMNodeCollection.prototype.attr = function (attributeName, value) {
     if (typeof value === "undefined") {
-      return this.nodeList.HTMLElements[0].getAttribute(attributeName);
+      return this.HTMLElements[0].getAttribute(attributeName);
     } else {
-      this.nodeList.HTMLElements.forEach(function(element) {
+      this.HTMLElements.forEach(function(element) {
         element.setAttribute(attributeName, value);
       });
     }
   };
 
-  jQueryLite.$l.prototype.addClass = function (newClassName) {
-    this.nodeList.HTMLElements.forEach(function(element) {
+  DOMNodeCollection.prototype.addClass = function (newClassName) {
+    this.HTMLElements.forEach(function(element) {
       if (element.className !== "") {
         element.className += " " + newClassName;
       } else {
@@ -70,7 +80,7 @@
     });
   };
 
-  jQueryLite.$l.prototype.removeClass = function (classNames) {
+  DOMNodeCollection.prototype.removeClass = function (classNames) {
     var oldClasses;
     var oldClassesArray;
     var delIdx;
@@ -78,60 +88,119 @@
     var j;
 
     if (typeof classNames === "undefined") {
-      for (i = 0; i < this.nodeList.HTMLElements.length; i++) {
-        this.nodeList.HTMLElements[i].className = "";
+      for (i = 0; i < this.HTMLElements.length; i++) {
+        this.HTMLElements[i].className = "";
       }
     } else {
       var classNameArray = classNames.split(" ");
       for (i = 0; i < classNameArray.length; i ++) {
-        for (j = 0; j < this.nodeList.HTMLElements.length; j++) {
-          oldClasses = this.nodeList.HTMLElements[j].classList;
+        for (j = 0; j < this.HTMLElements.length; j++) {
+          oldClasses = this.HTMLElements[j].classList;
           oldClasses.remove(classNameArray[i]);
         }
       }
     }
   };
 
-  jQueryLite.$l.prototype.children = function () {
+  DOMNodeCollection.prototype.children = function () {
     var dnCollection = [];
-    for (var i = 0; i < this.nodeList.HTMLElements.length; i++) {
-      var children = this.nodeList.HTMLElements[i].children;
+    for (var i = 0; i < this.HTMLElements.length; i++) {
+      var children = this.HTMLElements[i].children;
       children = [].slice.call(children);
       dnCollection.push(children);
     }
     dnCollection = [].concat.apply([], dnCollection);
-    return new jQueryLite.DOMNodeCollection(dnCollection);
+    return new DOMNodeCollection(dnCollection);
   };
 
-  jQueryLite.$l.prototype.parent = function () {
+  DOMNodeCollection.prototype.parent = function () {
     var dnCollection = [];
-    for (var i = 0; i < this.nodeList.HTMLElements.length; i++) {
-      var parent = this.nodeList.HTMLElements[i].parentNode;
+    for (var i = 0; i < this.HTMLElements.length; i++) {
+      var parent = this.HTMLElements[i].parentNode;
       dnCollection.push(parent);
     }
     // dnCollection = [].concat.apply([], dnCollection);
-    return new jQueryLite.DOMNodeCollection(dnCollection);
+    return new DOMNodeCollection(dnCollection);
   };
 
-  jQueryLite.$l.prototype.find = function (selector) {
+  DOMNodeCollection.prototype.find = function (selector) {
     var dnCollection = [];
 
-    for (var i = 0; i < this.nodeList.HTMLElements.length; i++) {
-      var queryResult = this.nodeList.HTMLElements[i].querySelectorAll(selector);
+    for (var i = 0; i < this.HTMLElements.length; i++) {
+      var queryResult = this.HTMLElements[i].querySelectorAll(selector);
       queryResult = [].slice.call(queryResult);
       dnCollection.push(queryResult);
     }
 
     dnCollection = [].concat.apply([], dnCollection);
-    return new jQueryLite.DOMNodeCollection(dnCollection);
+    return new DOMNodeCollection(dnCollection);
   };
 
-  jQueryLite.$l.prototype.remove = function () {
-    for (var i = 0; i < this.nodeList.HTMLElements.length; i++) {
-      this.nodeList.HTMLElements[i].remove();
+  DOMNodeCollection.prototype.remove = function () {
+    for (var i = 0; i < this.HTMLElements.length; i++) {
+      this.HTMLElements[i].remove();
     }
 
-    this.nodeList.HTMLElements = [];
+    this.HTMLElements = [];
   };
+
+  DOMNodeCollection.prototype.on = function (type, listener) {
+    for (var i = 0; i < this.HTMLElements.length; i++) {
+      this.HTMLElements[i].addEventListener(type, listener);
+    }
+  };
+
+  DOMNodeCollection.prototype.off = function (type, listener) {
+    for (var i = 0; i < this.HTMLElements.length; i++) {
+      this.HTMLElements[i].removeEventListener(type, listener);
+    }
+  };
+
+  $l.extend = function (obj1, obj2) {
+    return Object.assign.apply(null, arguments);
+  };
+
+  $l.ajax = function (options) {
+    var defaults = {type: 'GET', method: 'GET', url:'#', data: "DATA",
+      success: function(data) {
+      console.log("Status 200");
+      console.log(data);
+      },
+      error: function () {
+        console.error("An error occurred.");
+      }, contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    this.extend(defaults, options);
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+           if(xmlhttp.status == 200){
+             defaults.success(JSON.parse(xmlhttp.response));
+           }
+           else if(xmlhttp.status == 400) {
+              defaults.error();
+           }
+           else {
+              defaults.error();
+           }
+        }
+    };
+    xmlhttp.open(defaults.method, defaults.url, true);
+    xmlhttp.send();
+  };
+
+
+  var j = new $l(function() {
+    console.log("page is loaded");
+  });
+
+  $l.ajax({url: "http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=2de143494c0b295cca9337e1e96b00e0"});
+
 
 })();
