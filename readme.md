@@ -13,11 +13,11 @@ A collection of functions inspired by jQuery.
 * `DOMNodeCollection.on(type, listener)`
 * `DOMNodeCollection.off(type, listener)`
 * `DOMNodeCollection.empty()`
-* `DOMNodeCollection.append()`
-* `DOMNodeCollection.attr()`
-* `DOMNodeCollection.addClass()`
-* `DOMNodeCollection.removeClass()`
+* `DOMNodeCollection.append(argument)`
+* `DOMNodeCollection.attr(attributeName, value)`
+* `DOMNodeCollection.addClass(newClassName)`
+* `DOMNodeCollection.removeClass(classNames)`
 * `DOMNodeCollection.children()`
 * `DOMNodeCollection.parent()`
-* `DOMNodeCollection.find()`
+* `DOMNodeCollection.find(selector)`
 * `DOMNodeCollection.remove()`
