@@ -1,6 +1,6 @@
 # jQueryLite
 
-A collection of functions inspired by jQuery.
+A collection of functions inspired by jQuery. Creates functions to simplify selecting and modifying DOM elements and creating AJAX requests.
 
 ### Methods
 * `$l(selector)`
