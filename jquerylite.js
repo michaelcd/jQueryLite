@@ -1,14 +1,29 @@
 (function() {
 
+  if (typeof window.$l === "undefined") {
+    window.$l = {};
+  }
+
   // var fn = function () {
   //   for(var i = 0; i < jQueryLite.$l.fnArray.length; i++) {
   //     jQueryLite.$l.fnArray[i]();
   //   }
   // };
 
-  if (typeof window.$l === "undefined") {
-    window.$l = {};
-  }
+  var _docReadyCallbacks = [], _docReady = false;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    _docReady = true;
+    _docReadyCallbacks.forEach(function(func){ func(); });
+  });
+
+  var registerDocReadyCallback = function(func){
+    if(!_docReady){
+      _docReadyCallbacks.push(func);
+    } else {
+      func();
+    }
+  };
 
   $l = function (argument) {
     var fnArray = [];
@@ -19,8 +34,9 @@
       nodeList = [].slice.call(nodeList);
       return new DOMNodeCollection(nodeList);
     } else if (typeof argument === "function") {
-      fnArray.push(argument);
-      document.addEventListener('DOMContentLoaded', argument, false);
+      // fnArray.push(argument);
+      // document.addEventListener('DOMContentLoaded', argument, false);
+      registerDocReadyCallback(argument);
     }
   };
 

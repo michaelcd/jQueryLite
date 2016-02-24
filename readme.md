@@ -5,7 +5,7 @@ A collection of functions inspired by jQuery. Creates functions to simplify sele
 ## Including in your project
 
 ```HTML
-  <script src="jquerylite.js"></script>
+<script src="jquerylite.js"></script>
 ```
 
 ### Methods
