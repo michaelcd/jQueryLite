@@ -1,6 +1,6 @@
 # jQueryLite
 
-A collection of functions inspired by jQuery. Creates functions to simplify selecting and modifying DOM elements and creating AJAX requests.
+jQueryLite is a light-weight library inspired by the popular JavaScript library jQuery. It contains many of the core features of jQuery, allowing for simple DOM manipulation.
 
 ## Including in your project
 
@@ -16,14 +16,14 @@ A collection of functions inspired by jQuery. Creates functions to simplify sele
 * `$l.ajax(options)`
 
 ### DOMNodeCollection methods
-* `DOMNodeCollection.on(type, listener)`
-* `DOMNodeCollection.off(type, listener)`
-* `DOMNodeCollection.empty()`
-* `DOMNodeCollection.append(argument)`
-* `DOMNodeCollection.attr(attributeName, value)`
-* `DOMNodeCollection.addClass(newClassName)`
-* `DOMNodeCollection.removeClass(classNames)`
-* `DOMNodeCollection.children()`
-* `DOMNodeCollection.parent()`
-* `DOMNodeCollection.find(selector)`
-* `DOMNodeCollection.remove()`
+* `on(type, listener)`
+* `off(type, listener)`
+* `empty()`
+* `append(argument)`
+* `attr(attributeName, value)`
+* `addClass(newClassName)`
+* `removeClass(classNames)`
+* `children()`
+* `parent()`
+* `find(selector)`
+* `remove()`
