@@ -4,12 +4,6 @@
     window.$l = {};
   }
 
-  // var fn = function () {
-  //   for(var i = 0; i < jQueryLite.$l.fnArray.length; i++) {
-  //     jQueryLite.$l.fnArray[i]();
-  //   }
-  // };
-
   var _docReadyCallbacks = [], _docReady = false;
 
   document.addEventListener('DOMContentLoaded', function () {
