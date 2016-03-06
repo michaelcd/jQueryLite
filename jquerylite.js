@@ -28,8 +28,6 @@
       nodeList = [].slice.call(nodeList);
       return new DOMNodeCollection(nodeList);
     } else if (typeof argument === "function") {
-      // fnArray.push(argument);
-      // document.addEventListener('DOMContentLoaded', argument, false);
       registerDocReadyCallback(argument);
     }
   };
@@ -129,7 +127,6 @@
       var parent = this.HTMLElements[i].parentNode;
       dnCollection.push(parent);
     }
-    // dnCollection = [].concat.apply([], dnCollection);
     return new DOMNodeCollection(dnCollection);
   };
 
@@ -205,8 +202,4 @@
     xmlhttp.send();
   };
 
-
-  var j = new $l(function() {
-    console.log("page is loaded");
-  });
 })();
